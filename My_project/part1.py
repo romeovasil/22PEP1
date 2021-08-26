@@ -1,5 +1,5 @@
 import tkinter
-
+from Questions import qst
 main_window = tkinter.Tk()
 main_window.title("Exam")
 
@@ -64,20 +64,22 @@ def switch(leng,arg):
 
     return(switcher[arg])
 
+
+
 class TestWindow():
     def __init__(self,root_window:tkinter.Tk,nr):
         self.test_window=root_window
-        self.test_label1=tkinter.Label(self.test_window,text="Question1:")
-        self.test_label2 = tkinter.Label(self.test_window, text="Question2:")
-        self.test_label3 = tkinter.Label(self.test_window, text="Question3:")
+        self.test_label1=tkinter.Label(self.test_window,text=qst(1),justify=tkinter.LEFT)
+        self.test_label2 = tkinter.Label(self.test_window,text=qst(2),justify=tkinter.LEFT)
+        self.test_label3 = tkinter.Label(self.test_window, text=qst(3),justify=tkinter.LEFT)
         self.test_label4= tkinter.Label(self.test_window, text="Question4:")
         self.test_label5 = tkinter.Label(self.test_window, text="Question5:")
         self.test_label6 = tkinter.Label(self.test_window, text="Question6:")
 
 
-        self.test_label1.grid(row=0,column=0)
-        self.test_label2.grid(row=0, column=1)
-        self.test_label3.grid(row=0, column=2)
+        self.test_label1.grid(row=0,column=0,sticky=tkinter.N)
+        self.test_label2.grid(row=0, column=1,sticky=tkinter.N)
+        self.test_label3.grid(row=0, column=2,sticky=tkinter.N)
         self.test_label4.grid(row=2, column=0)
         self.test_label5.grid(row=2, column=1)
         self.test_label6.grid(row=2, column=2)
