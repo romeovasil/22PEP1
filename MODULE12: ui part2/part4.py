@@ -5,15 +5,17 @@ import tkinter
 from tkinter import messagebox
 from MODULE11_ui.app2 import LoginWindow
 from functools import partial
+from MODULE16.connect import send_mail
 import re
 
 
 # pylint: disable=missing-class-docstring
 class MenuWindow():
     # pylint: disable=missing-function-docstring
-    def __init__(self, username: str):
+    def __init__(self, login_info:tuple):
         self.open_file=None
-        self.username = username
+        self.user,self.passw=login_info
+
         root_window = tkinter.Tk()
         root_window.title("Menu")
         self.root_window = root_window
@@ -60,7 +62,10 @@ class MenuWindow():
             content = file.read()
 
             for line in content.splitlines():
-                destination = re.search(r'^TO: (.+)',line)
+                from_ = re.match(r"^From: (.+)",line)
+                if from_:
+                    self.user=from_.group(1)
+                destination = re.search(r'^TO: (.+)', line)
                 if destination:
                     self.dest_entry.insert("0",destination.group(1))
                     continue
@@ -69,6 +74,7 @@ class MenuWindow():
                     self.subj_entry.insert("0",subject.group(1))
                     continue
                 self.text.insert(tkinter.END, line+"\n")
+
 
 
 
@@ -120,6 +126,7 @@ class MenuWindow():
         result=header+text
         with open(self.open_file,'w') as file:
             file.write(result)
+        return text,to
 
     def search_message(self):
         # pylint: disable=use-maxsplit-arg
@@ -141,7 +148,8 @@ class MenuWindow():
         answer = messagebox.askquestion("Confirmation", "Are you sure you want to send?")
         if answer == "yes":
             print("Running code...")
-            self.save()
+            msg,to=self.save()
+            send_mail(self.user,self.passw,msg,to)
         else:
             print("Canceling...")
 
