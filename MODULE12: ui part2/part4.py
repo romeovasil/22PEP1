@@ -5,7 +5,7 @@ import tkinter
 from tkinter import messagebox
 from MODULE11_ui.app2 import LoginWindow
 from functools import partial
-from MODULE16.connect import send_mail
+from MODULE16.connect import send_mail,read_mail
 import re
 
 
@@ -55,6 +55,12 @@ class MenuWindow():
         self.search_box = tkinter.Entry(self.frame2)
         self.searched_text = self.search_box.get()
         self.result = self.text.search(self.searched_text, "0.0", tkinter.END)
+
+        self.read_button=tkinter.Button(self.root_window,text="read mails",command=self.read)
+        self.read_button.pack()
+
+    def read(self):
+        read_mail(self.user,self.passw)
 
     def load_message(self, dir):
         with open(dir, 'r') as file:
